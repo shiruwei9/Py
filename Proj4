@@ -1,73 +1,77 @@
-# Project4 Part I
+# Project 4 – Twitter Clone (Part 1)
+**COP5615 - Distributed Operating Systems Principles**
 
-## Team Member
-- Jiajing Liao, 01469951
-- Jingzhou Hu, 11319238
+---
+## Group Information
+
+* [Jiaqi Cheng- 34563129]
+* [Shiru Wei- 08892233]
+
+---
 
 ## Description
 We finish **all** functionality of Project4 Part I requirements.
 
-#### Running options 1
-There 3 files we provide in ./fsx
-- `AkkaServer.fsx` is the server
-- `AkkaClientOne.fsx` is the client
-- `AkkaClient.fsx` is for performance test
+#### Running options 
 
-#### Running options 2
-you can also run .fs files in ./fs folder, this requires a Visual Studio or JetBrains Rider IDE
+There 2 files we provide in ./fsx
+- `Server.fsx` is the server
+- `Client.fsx` is the client, and can do the performace test.
+
 
 ## Implementation
 #### Client
-We use Akka.actor heavily, the major responsibility of client is to send the message string to the server, and disply the result string to the screen
+The major responsibility of client is to send the message string to the server, and disply the result string to the screen
+
 #### Server
-We build Twitter Server basically by 3 Class: Tweet, User, and Twitter. 
-- Tweet is the instance of tweet, identified by System time stamp
-- User is the instance of User, identified by username
+The Twitter Server we biult is basically made up by 3 Class: Tweet, User, and Twitter. 
+- Tweet shows the time we sending the tweet, which comes with System time stamp
+- User provides the identity of the message and the user.
 - Twitter is a Singleton instance, which is consist of many HashMap, in order to speed up the search for "#" and "@"
 
 #### for "#" and "@", HashMap to speed up
 Whenever a new Tweet is published, it will be parsed. If it contains "#" or "@", it will then be add to the HashMap.
 
 #### Connecting and disconnecting
-We use a `Long Pulling` techniques, every 1 seconds, the actor will try to query the tweets it subscribes, and if there is a difference to the previous result, it will be displayed to the screen
-
+When we checked the user is connected/ disconnected, we would update the session/ remove the upcoming update information
 ## How to use
 
 #### Command Explanation
-Our Client Command is consist of 9 String, seperated by comma ","
 
-9 command format: 
+Command format: 
 **Very Important**
 ```
-opt+","+POST+","+username+","+password+","+target_username+","+tweet_content+","+queryhashtag+","+at+","+register
+"dotnet fsi --langversion:preview" + "name.fsx" ( + "usernumber" + "function")
 ```
-
-In order to understand the means of below command, please look at below example 1
-
+The function 0 is querying tweets the users subscribed to.
+The function 1 is querying tweets with specific hashtag
+The function 2 is querying the mentions.(@)
 
 #### Example 1: Functionality
-open 1st terminal as Server
+Open 1st terminal as Server
 ```
-dotnet fsi --langversion:preview AkkaServer.fsx
+dotnet fsi --langversion:preview Server.fsx
 ```
 
-open 2nd terminal as Client
+open 2nd terminal as Client and set up the function
 ```
-dotnet fsi --langversion:preview AkkaClientOne.fsx
+dotnet fsi --langversion:preview Clinet.fsx 5 0
+
 ```
 
 Then Input Below Command line by line into CLient Terminal
 ```
-reg, ,user1,123456, , , , ,
-reg, ,user2,123456, , , , ,
-send, ,user1,123456, ,tweet1 @Biden , , ,
-send, ,user2,123456, ,tweet2 #Trump , , ,
-send, ,user2,123456, ,tweet3 @Biden #Trump , , ,
-subscribe, ,user1,123456,user2, , , ,
-querying, ,user1,123456, , , , ,
-querying, ,user2,123456, , , , ,
-#, , , , , ,#Trump, ,
-@, , , , , , ,@Biden,
+engine createUser "user1@gmail.com"
+engine createUser "user3@gmail.com"
+engine createUser "user4@gmail.com"
+engine createUser "user2@gmail.com"
+engine createUser "user0@gmail.com"
+engine subscribe: add follow info!!!!
+engine subscribe: add follow info!!!!
+engine subscribe: add follow info!!!!
+engine subscribe: add follow info!!!!
+engine subscribe: add follow info!!!!
+engine sendTweet: add all tweets info!!!
 ```
 
 ![](pictures/3.png)
